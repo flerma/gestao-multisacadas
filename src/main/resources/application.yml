@@ -1,0 +1,15 @@
+spring.application.name=gestao-multisacadas
+
+# Configuração do PostgreSQL
+spring.datasource.url=jdbc:postgresql://localhost:5432/gestao_multisacadas
+spring.datasource.username=multisacadas
+spring.datasource.password=multisacadas
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# JPA e Hibernate
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# Cache
+spring.cache.type=simple
