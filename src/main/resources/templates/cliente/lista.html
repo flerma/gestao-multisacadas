@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Clientes</title>
+</head>
+<body>
+<h2>Clientes</h2>
+<table>
+    <tr>
+        <th>Nome</th>
+        <th>CPF/CNPJ</th>
+        <th>Email</th>
+        <th>Telefone</th>
+        <th>Endereços</th>
+        <th>Ações</th>
+    </tr>
+    <tr th:each="cliente : ${clientes}">
+        <td th:text="${cliente.nome}"></td>
+        <td th:text="${cliente.cpfCnpj}"></td>
+        <td th:text="${cliente.email}"></td>
+        <td th:text="${cliente.telefone}"></td>
+        <td>
+            <ul>
+                <li th:each="endereco : ${cliente.enderecos}">
+                    <span th:text="${endereco.endereco} + ', ' + ${endereco.numero} + ', ' + ${endereco.cidade}"></span>
+                </li>
+            </ul>
+        </td>
+        <td>
+            <a th:href="@{/clientes/editar/{id}(id=${cliente.id})}">Editar</a>
+            <a th:href="@{/clientes/deletar/{id}(id=${cliente.id})}" onclick="return confirm('Tem certeza?')">Excluir</a>
+        </td>
+    </tr>
+</table>
+<a href="/clientes/novo">Adicionar Cliente</a>
+</body>
+</html>

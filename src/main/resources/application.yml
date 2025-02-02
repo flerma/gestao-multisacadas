@@ -1,15 +1,28 @@
-spring.application.name=gestao-multisacadas
+spring:
+  application:
+    name: gestao-multisacadas
+  datasource:
+    url: jdbc:postgresql://localhost:5433/gestao-multisacadas
+    username: multisacadas
+    password: MultiS@c@d@s
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate.ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    liquibase:
+      change-log: classpath:db/changelog/db.changelog-master.yml
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+  security:
+    user:
+      name: admin
+      password: '@dm!N'
 
-# Configuração do PostgreSQL
-spring.datasource.url=jdbc:postgresql://localhost:5432/gestao_multisacadas
-spring.datasource.username=multisacadas
-spring.datasource.password=multisacadas
-spring.datasource.driver-class-name=org.postgresql.Driver
+server:
+  port: 8082
 
-# JPA e Hibernate
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-
-# Cache
-spring.cache.type=simple
