@@ -21,15 +21,12 @@ public class SecurityConfig {
                     "/api/**"
                 ).permitAll()
                 .requestMatchers(
-                    "/cliente/view",
-                    "/cliente/new",
-                    "/cliente/update",
-                    "/cliente/delete").hasAnyRole("ADMIN", "USER")
+                    "/clientes/**").hasAnyRole("ADMIN", "USER")
                 .requestMatchers("/usuario").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
-                .defaultSuccessUrl("/cliente/view", true)
+                .defaultSuccessUrl("/clientes", true)
                 .permitAll()
             )
             .logout(logout -> logout

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Cliente</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+<body>
+<div class="container">
+
+    <h2 class="center-align">Cadastro de Cliente</h2>
+
+    <form th:action="@{/clientes}" th:object="${cliente}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="input-field">
+            <input type="text" th:field="*{nome}" required />
+            <label th:classappend="${cliente.nome} ? 'active' : ''">Nome</label>
+        </div>
+        <div class="input-field">
+            <input type="text" th:field="*{cpfCnpj}" required />
+            <label th:classappend="${cliente.cpfCnpj} ? 'active' : ''">CPF/CNPJ</label>
+            <span th:if="${erroCpfCnpj}" th:text="${erroCpfCnpj}" class="red-text"></span>
+        </div>
+        <div class="input-field">
+            <input type="email" th:field="*{email}" required />
+            <label th:classappend="${cliente.email} ? 'active' : ''">Email</label>
+        </div>
+        <div class="input-field">
+            <input type="text" th:field="*{telefone}" required />
+            <label th:classappend="${cliente.telefone} ? 'active' : ''">Telefone</label>
+        </div>
+
+        <h4>Endereços</h4>
+        <div id="enderecos">
+            <div th:each="endereco, iterStat : *{enderecos}" class="card-panel">
+                <div class="input-field">
+                    <input type="text" th:field="*{enderecos[__${iterStat.index}__].endereco}" required />
+                    <label th:classappend="${endereco.endereco} ? 'active' : ''">Rua</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" th:field="*{enderecos[__${iterStat.index}__].numero}" required />
+                    <label th:classappend="${endereco.numero} ? 'active' : ''">Número</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" th:field="*{enderecos[__${iterStat.index}__].complemento}" />
+                    <label th:classappend="${endereco.complemento} ? 'active' : ''">Complemento</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" th:field="*{enderecos[__${iterStat.index}__].bairro}" required />
+                    <label th:classappend="${endereco.bairro} ? 'active' : ''">Bairro</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" th:field="*{enderecos[__${iterStat.index}__].cidade}" required />
+                    <label th:classappend="${endereco.cidade} ? 'active' : ''">Cidade</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" th:field="*{enderecos[__${iterStat.index}__].estado}" required maxlength="2" />
+                    <label th:classappend="${endereco.estado} ? 'active' : ''">Estado</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" th:field="*{enderecos[__${iterStat.index}__].cep}" required />
+                    <label th:classappend="${endereco.cep} ? 'active' : ''">CEP</label>
+                </div>
+                <button type="button" class="btn red" onclick="removerEndereco(this)">Remover</button>
+            </div>
+        </div>
+        <button type="button" class="btn blue" onclick="adicionarEndereco()">Adicionar Endereço</button>
+
+        <br><br>
+        <button type="submit" class="btn green">Salvar</button>
+    </form>
+
+    <a href="/clientes" class="btn grey">Voltar</a>
+</div>
+
+<script>
+    function adicionarEndereco() {
+        let container = document.getElementById('enderecos');
+        let index = container.children.length;
+        let newDiv = document.createElement('div');
+        newDiv.classList.add('card-panel');
+        newDiv.innerHTML = `
+            <div class="input-field">
+                <input type="text" name="enderecos[${index}].endereco" required />
+                <label class="active">Rua</label>
+            </div>
+            <div class="input-field">
+                <input type="text" name="enderecos[${index}].numero" required />
+                <label class="active">Número</label>
+            </div>
+            <div class="input-field">
+                <input type="text" name="enderecos[${index}].complemento" />
+                <label class="active">Complemento</label>
+            </div>
+            <div class="input-field">
+                <input type="text" name="enderecos[${index}].bairro" required />
+                <label class="active">Bairro</label>
+            </div>
+            <div class="input-field">
+                <input type="text" name="enderecos[${index}].cidade" required />
+                <label class="active">Cidade</label>
+            </div>
+            <div class="input-field">
+                <input type="text" name="enderecos[${index}].estado" required maxlength="2"/>
+                <label class="active">Estado</label>
+            </div>
+            <div class="input-field">
+                <input type="text" name="enderecos[${index}].cep" required />
+                <label class="active">CEP</label>
+            </div>
+            <button type="button" class="btn red" onclick="this.parentElement.remove()">Remover</button>
+        `;
+        container.appendChild(newDiv);
+    }
+
+    function removerEndereco(button) {
+        button.parentElement.remove();
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Ativa os labels dos campos que já possuem valor
+        document.querySelectorAll("input").forEach(input => {
+            if (input.value.trim() !== "") {
+                input.nextElementSibling.classList.add("active");
+            }
+
+            // Adiciona evento de entrada para ativar o label ao digitar
+            input.addEventListener("input", function () {
+                if (this.value.trim() !== "") {
+                    this.nextElementSibling.classList.add("active");
+                } else {
+                    this.nextElementSibling.classList.remove("active");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

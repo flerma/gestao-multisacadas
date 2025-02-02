@@ -29,7 +29,7 @@ public class EnderecoEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
+    @JoinColumn(name = "cliente_id")
     private ClienteEntity cliente;
 
     @Column
